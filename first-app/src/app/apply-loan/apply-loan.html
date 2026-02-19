@@ -1,0 +1,120 @@
+<div class="loan-container">
+  <h1 class="title">Apply for Loan</h1>
+
+  <form (ngSubmit)="onSubmit()" class="loan-form">
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label>Gender</label>
+        <select name="gender" [(ngModel)]="form.gender">
+          <option>Male</option>
+          <option>Female</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Married</label>
+        <select name="married" [(ngModel)]="form.married">
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Dependents</label>
+        <select name="dependents" [(ngModel)]="form.dependents">
+          <option>0</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3+</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Education</label>
+        <select name="education" [(ngModel)]="form.education">
+          <option>Graduate</option>
+          <option>Not Graduate</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Self Employed</label>
+        <select name="selfEmployed" [(ngModel)]="form.selfEmployed">
+          <option>No</option>
+          <option>Yes</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Property Area</label>
+        <select name="propertyArea" [(ngModel)]="form.propertyArea">
+          <option>Urban</option>
+          <option>Semiurban</option>
+          <option>Rural</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Applicant Income</label>
+        <input type="number" name="applicantIncome" [(ngModel)]="form.applicantIncome" />
+      </div>
+
+      <div class="form-group">
+        <label>Co-applicant Income</label>
+        <input type="number" name="coapplicantIncome" [(ngModel)]="form.coapplicantIncome" />
+      </div>
+
+      <div class="form-group">
+        <label>Loan Amount</label>
+        <input type="number" name="loanAmount" [(ngModel)]="form.loanAmount" />
+      </div>
+
+      <div class="form-group">
+        <label>Loan Term (Months)</label>
+        <input type="number" name="loanTermMonths" [(ngModel)]="form.loanTermMonths" />
+      </div>
+
+      <div class="form-group">
+        <label>Credit History</label>
+        <select name="creditHistory" [(ngModel)]="form.creditHistory">
+          <option [ngValue]="1">Good (1)</option>
+          <option [ngValue]="0">Bad (0)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Property Market Value</label>
+        <input type="number" name="propertyMarketValue" [(ngModel)]="form.propertyMarketValue" />
+      </div>
+
+    </div>
+
+    <!-- Document Upload -->
+    <div class="upload-section">
+      <label class="upload-label">Upload Document (Required)</label>
+
+      <input
+        type="file"
+        name="document"
+        (change)="onFileSelected($event)"
+        accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+      />
+
+      <p *ngIf="docError" class="error-text">
+        Please upload a document before submitting.
+        
+      </p>
+
+      <p *ngIf="selectedFile" class="file-name">
+        Selected: {{ selectedFile.name }}
+      </p>
+    </div>
+
+    <button type="submit" class="submit-btn">
+      Submit Application
+    </button>
+
+  </form>
+</div>
