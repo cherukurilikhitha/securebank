@@ -1,0 +1,175 @@
+<header class="topbar">
+  <div class="brand">
+    <div class="logo">{{ bankName }}</div>
+    <div class="tagline">Trusted banking for loans, savings and investments</div>
+  </div>
+
+  <div class="user-area">
+    <div class="user-chip">Welcome, {{ userName }}</div>
+    <button class="btn btn-outline" (click)="onLogout()">Logout</button>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- Hero section -->
+  <section class="hero">
+    <div class="hero-left">
+      <h1>Welcome to {{ bankName }}</h1>
+      <p class="hero-text">
+        Manage your banking services in one place. Check your loan eligibility instantly
+        and explore savings and support options.
+      </p>
+
+      <div class="hero-actions">
+        <button class="btn btn-secondary" (click)="goToApplyLoan()">
+          Check for Eligibility
+        </button>
+
+        <button class="btn btn-secondary" (click)="goToApplyLoan()">
+          Apply for Loan
+        </button>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-card">
+        <div class="hero-card-title">Smart Loan Approval</div>
+        <div class="hero-card-text">
+          Our system evaluates factors like credit history, income, and property value
+          to give you a quick decision.
+        </div>
+        <div class="hero-card-badges">
+          <span class="badge">Fast</span>
+          <span class="badge">Explainable</span>
+          <span class="badge">Secure</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ✅ Image Carousel (Standalone) -->
+  <!-- Image Carousel (Internet Images - No asset issues) -->
+<section class="carousel-section">
+  <div class="carousel">
+    <div class="slides">
+  <img
+    src="https://www.slideteam.net/media/catalog/product/cache/1280x720/3/d/3d_illustration_business_and_finance_keeping_money_in_the_bank_stock_photo_Slide01.jpg"
+    alt="Digital Banking">
+
+  <img
+    src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1600&q=80"
+    alt="Online Loan Services">
+
+  <img
+    src="https://images.unsplash.com/photo-1601597111158-2fceff292cdc?auto=format&fit=crop&w=1600&q=80"
+    alt="Secure Banking">
+</div>
+
+
+    <div class="dots">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+</section>
+
+
+  <!-- Services Cards -->
+ <!-- Bank Services -->
+<section class="section services-section">
+  <h2 class="section-title">Bank Services</h2>
+  <p class="section-subtitle">Choose a service to continue</p>
+
+  <div class="services-grid">
+    <div class="service-card" *ngFor="let s of services; let i = index">
+
+      <!-- Top Image Banner -->
+      <div class="service-image">
+  <img
+    [src]="
+      (s.title || '').toLowerCase().includes('loan') ? 'https://picsum.photos/seed/loan/900/400' :
+      (s.title || '').toLowerCase().includes('saving') ? 'https://picsum.photos/seed/savings/900/400' :
+      (s.title || '').toLowerCase().includes('credit') ? 'https://picsum.photos/seed/credit/900/400' :
+      (s.title || '').toLowerCase().includes('support') ? 'https://picsum.photos/seed/support/900/400' :
+      (s.title || '').toLowerCase().includes('invest') ? 'https://picsum.photos/seed/invest/900/400' :
+      'https://picsum.photos/seed/banking/900/400'
+    "
+    alt="Bank Service"
+  />
+</div>
+
+      <!-- Icon Logo -->
+     <div class="service-icon">
+  <span class="icon-text">
+    {{
+      (s.title || '').toLowerCase().includes('loan') ? '🏦' :
+      (s.title || '').toLowerCase().includes('saving') ? '💰' :
+      (s.title || '').toLowerCase().includes('credit') ? '💳' :
+      (s.title || '').toLowerCase().includes('support') ? '📞' :
+      (s.title || '').toLowerCase().includes('invest') ? '📈' :
+      '✅'
+    }}
+  </span>
+</div>
+
+
+      <!-- Content -->
+      <div class="service-content">
+        <div class="card-title">{{ s.title }}</div>
+        <div class="card-desc">{{ s.description }}</div>
+
+        <button class="btn btn-primary" (click)="onServiceAction(s)">
+          {{ s.actionText }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+  <!-- Quick Actions -->
+  <section class="section quick">
+    <h2 class="section-title">Quick Actions</h2>
+
+    <div class="quick-actions">
+      <button class="btn btn-secondary" (click)="goToApplyLoan()">
+        Apply Now
+      </button>
+
+      <button class="btn btn-secondary" (click)="goToLoanEligibility()">
+        Check Eligibility
+      </button>
+
+      <button class="btn btn-secondary" (click)="showEmiCalculator()">
+        EMI Calculator
+      </button>
+
+      <button class="btn btn-secondary" (click)="showSupport()">
+        Contact Support
+      </button>
+    </div>
+  </section>
+
+  <!-- Notices -->
+  <section class="section">
+    <h2 class="section-title">Announcements</h2>
+    <div class="notice" *ngFor="let n of notices">
+      • {{ n }}
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div>© {{ bankName }} 2026 • Sample UI for project</div>
+    <div class="footer-links">
+      <a href="javascript:void(0)">About</a>
+      <a href="javascript:void(0)">Privacy</a>
+      <a href="javascript:void(0)">Terms</a>
+      <a href="javascript:void(0)">Contact</a>
+    </div>
+  </footer>
+
+</main>
