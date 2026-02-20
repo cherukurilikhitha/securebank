@@ -37,20 +37,16 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Build Production
-        run: npm run build -- --configuration production
+      - name: Build Production (GitHub Pages base-href)
+        run: npm run build -- --configuration production --base-href "/securebank/"
 
-      # ⚠️ IMPORTANT:
-      # Angular builds to first-app/dist/<app-name>
-      # If this fails, adjust the folder name.
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: securebank/dist/first-app
+        path: first-app/dist/first-app
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
-
 
   # =============================
   # Build Backend JAR
