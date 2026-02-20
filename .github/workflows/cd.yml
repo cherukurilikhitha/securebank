@@ -1,0 +1,83 @@
+name: Secure Bank - CD
+
+on:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "secure-bank-deploy"
+  cancel-in-progress: true
+
+jobs:
+
+  # =============================
+  # Deploy Angular Frontend
+  # =============================
+  deploy-frontend:
+    name: Deploy Angular to GitHub Pages
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: first-app
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Production
+        run: npm run build -- --configuration production
+
+      # ⚠️ IMPORTANT:
+      # Angular builds to first-app/dist/<app-name>
+      # If this fails, adjust the folder name.
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: securebank/dist/first-app
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+
+
+  # =============================
+  # Build Backend JAR
+  # =============================
+  build-backend:
+    name: Build & Upload Backend JAR
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: firstappbackend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      - name: Build Backend
+        run: mvn -B clean package -DskipTests
+
+      - name: Upload JAR Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: securebank-backend-jar
+          path: firstappbackend/target/*.jar

@@ -1,0 +1,60 @@
+name: Secure Bank - CI
+
+on:
+  push:
+    branches: ["main", "develop", "feature/**"]
+  pull_request:
+    branches: ["main", "develop"]
+
+jobs:
+
+  # =============================
+  # FRONTEND (first-app)
+  # =============================
+  frontend:
+    name: Build Angular Frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: first-app
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+
+  # =============================
+  # BACKEND (firstappbackend)
+  # =============================
+  backend:
+    name: Build Spring Boot Backend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: firstappbackend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      # Skipping tests to avoid DB failure
+      - name: Build Backend
+        run: mvn -B clean package -DskipTests
