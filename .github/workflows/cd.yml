@@ -14,12 +14,16 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy_frontend_pages:
-    name: Deploy Frontend to GitHub Pages
+
+  # =============================
+  # 1️⃣ Deploy Angular Frontend
+  # =============================
+  deploy_frontend:
+    name: Deploy Angular to GitHub Pages
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: frontend
+        working-directory: first-app
 
     steps:
       - name: Checkout
@@ -29,32 +33,34 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: npm
-          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build
+      - name: Build Angular App
+        run: npm run build -- --configuration production
 
       # IMPORTANT:
-      # Change this path to your actual Angular build output folder.
-      # Often it's: frontend/dist/<app-name>
-      - name: Upload Pages artifact
+      # Angular usually builds into: first-app/dist/<app-name>
+      # If deploy fails, adjust this path accordingly.
+      - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: frontend/dist
+          path: securebank/dist/first-app
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
 
-  publish_backend_jar:
-    name: Publish Backend JAR (Artifact)
+
+  # =============================
+  # 2️⃣ Build Backend JAR Artifact
+  # =============================
+  publish_backend:
+    name: Build & Upload Backend JAR
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: backend
+        working-directory: firstappbackend
 
     steps:
       - name: Checkout
@@ -67,11 +73,11 @@ jobs:
           java-version: "17"
           cache: maven
 
-      - name: Build JAR
+      - name: Build Backend
         run: mvn -B clean package -DskipTests
 
-      - name: Upload JAR artifact
+      - name: Upload Backend JAR
         uses: actions/upload-artifact@v4
         with:
           name: secure-bank-backend-jar
-          path: backend/target/*.jar
+          path: firstappbackend/target/*.jar
