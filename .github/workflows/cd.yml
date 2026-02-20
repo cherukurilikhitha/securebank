@@ -10,15 +10,15 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "secure-bank-pages"
+  group: "secure-bank-deploy"
   cancel-in-progress: true
 
 jobs:
 
   # =============================
-  # 1️⃣ Deploy Angular Frontend
+  # Deploy Angular Frontend
   # =============================
-  deploy_frontend:
+  deploy-frontend:
     name: Deploy Angular to GitHub Pages
     runs-on: ubuntu-latest
     defaults:
@@ -34,15 +34,15 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install Dependencies
+        run: npm install
 
-      - name: Build Angular App
+      - name: Build Production
         run: npm run build -- --configuration production
 
-      # IMPORTANT:
-      # Angular usually builds into: first-app/dist/<app-name>
-      # If deploy fails, adjust this path accordingly.
+      # ⚠️ IMPORTANT:
+      # Angular builds to first-app/dist/<app-name>
+      # If this fails, adjust the folder name.
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -53,9 +53,9 @@ jobs:
 
 
   # =============================
-  # 2️⃣ Build Backend JAR Artifact
+  # Build Backend JAR
   # =============================
-  publish_backend:
+  build-backend:
     name: Build & Upload Backend JAR
     runs-on: ubuntu-latest
     defaults:
@@ -76,8 +76,8 @@ jobs:
       - name: Build Backend
         run: mvn -B clean package -DskipTests
 
-      - name: Upload Backend JAR
+      - name: Upload JAR Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: secure-bank-backend-jar
+          name: securebank-backend-jar
           path: firstappbackend/target/*.jar
